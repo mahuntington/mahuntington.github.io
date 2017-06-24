@@ -154,7 +154,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						<textarea name="message" id="message" rows="3"></textarea>
 					</div>
 					<ul class="actions">
-						<li><input type="submit" value="Send Message" /></li>
+						<li><input type="submit" id="submit" value="Send Message" /></li>
 					</ul>
 				</form>
 			</section>
@@ -199,6 +199,28 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 	<script src="assets/js/skel.min.js"></script>
 	<script src="assets/js/util.js"></script>
 	<script src="assets/js/main.js"></script>
-
+	<script type="text/javascript">
+		$(()=>{
+			$('form').submit((event)=>{
+				event.preventDefault();
+				$.ajax({
+					url:'/mail.php',
+					method:'POST',
+					data: {
+						name: $('#name').val(),
+						email: $('#email').val(),
+						message: $('#message').val(),
+					}
+				}).then((data)=>{
+					console.log(JSON.parse(data));
+					if(JSON.parse(data).status == 200){
+						$('#submit').parent().text('Your message has been sent!  Please wait to hear back from us.');
+					} else {
+						$('#submit').val('Some thing went wrong.  Try again').addClass('special');
+					}
+				});
+			})
+		});
+	</script>
 </body>
 </html>
