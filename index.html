@@ -203,6 +203,7 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 		$(()=>{
 			$('form').submit((event)=>{
 				event.preventDefault();
+				$('#submit').val('Sending...');
 				$.ajax({
 					url:'/mail.php',
 					method:'POST',
@@ -212,12 +213,13 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						message: $('#message').val(),
 					}
 				}).then((data)=>{
-					console.log(JSON.parse(data));
 					if(JSON.parse(data).status == 200){
 						$('#submit').parent().text('Your message has been sent!  Please wait to hear back from us.');
 					} else {
-						$('#submit').val('Some thing went wrong.  Try again').addClass('special');
+						$('#submit').val('Something went wrong.  Try again later').addClass('special');
 					}
+				},(error)=>{
+					$('#submit').val('Something went wrong.  Try again later').addClass('special');
 				});
 			})
 		});
